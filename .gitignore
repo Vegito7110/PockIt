@@ -1,0 +1,9 @@
+# Ignore the node_modules folder wherever it appears
+node_modules/
+
+# Ignore all .env files (in the root, in /client, in /server, etc.)
+.env
+
+
+
+serviceAccount.json
