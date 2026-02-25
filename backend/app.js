@@ -19,7 +19,7 @@ admin.initializeApp({
 //middleware
 app.use(express.json())
 app.use(cors({
-  origin: 'https://pock-it.vercel.app/', // Replace with your actual Vercel URL
+  origin: 'https://pock-it.vercel.app', // Replace with your actual Vercel URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true 
 }));

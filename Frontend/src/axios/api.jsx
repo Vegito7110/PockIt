@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 // --- Create a new Axios instance ---
 const apiClient = axios.create({
   // Set your backend's base URL
-  baseURL: `${import.meta.env.VITE_FIREBASE_API_KEY}/api`, 
+  baseURL: `${import.meta.env.VITE_API_URL}/api`, 
   headers: {
     'Content-Type': 'application/json',
   },
