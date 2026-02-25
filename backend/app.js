@@ -19,7 +19,11 @@ admin.initializeApp({
 
 //middleware
 app.use(express.json())
-app.use(cors());
+app.use(cors({
+  origin: 'https://pock-it.vercel.app/', // Replace with your actual Vercel URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true 
+}));
 
 
 // //routes
@@ -28,7 +32,7 @@ app.use('/api/transactions',transactionsRouter)
 app.use('/api', aiRouter) // <-- 2. USE NEW ROUTER
 
 //server
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 const start = async()=>{
     try {
         await connectDB(process.env.MONGO_URI)
