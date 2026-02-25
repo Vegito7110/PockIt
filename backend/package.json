@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node index.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "@langchain/core": "^1.0.2",

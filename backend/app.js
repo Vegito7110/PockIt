@@ -8,7 +8,6 @@ const admin = require('firebase-admin')
 // const serviceAccount = require('./serviceAccount.json')
 const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
 //routers
-const authRouter  = require('./routes/authRouter')
 const transactionsRouter = require('./routes/transactionRouter')
 const aiRouter = require('./routes/aiRouter') // <-- 1. IMPORT NEW ROUTER
 
