@@ -1,8 +1,6 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import icon from '../assets/close-icon.png';
+import { useNavigate } from 'react-router-dom'; 
 import {auth} from '../firebase.js';
-import { signOut } from 'firebase/auth'; // Import signOut function
+import { signOut } from 'firebase/auth'; 
 
 function Profile({onCloseProfile}) {
     const user = auth.currentUser;
@@ -11,12 +9,12 @@ function Profile({onCloseProfile}) {
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            // After successful sign out, close the modal and redirect to the root (login) page
+
             onCloseProfile();
             navigate('/'); 
         } catch (error) {
             console.error("Error signing out:", error);
-            // Optionally, show a message to the user
+
             alert("Logout failed. Please try again.");
         }
     };
@@ -27,7 +25,7 @@ function Profile({onCloseProfile}) {
             <div className='flex justify-between items-center border-b pb-3 mb-4'>
                 <h2 className='font-inter font-bold text-xl md:text-2xl'>User Profile</h2>
                 <button className='bg-transparent focus:outline-none' onClick={onCloseProfile}>
-                    {/* Using a simple X icon for better accessibility */}
+ 
                     <span className='text-gray-500 hover:text-gray-800 text-2xl'>&times;</span>
                 </button>
             </div>
@@ -44,7 +42,7 @@ function Profile({onCloseProfile}) {
                 
             </div>
             
-            {/* --- Logout Button --- */}
+
             <div className='mt-8 pt-4 border-t border-gray-200'>
                 <button
                     onClick={handleLogout}

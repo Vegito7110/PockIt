@@ -15,15 +15,10 @@ import {
   CartesianGrid
 } from 'recharts';
 
-// Define the apiClient directly to ensure it compiles in all environments
-const apiClient = axios.create({
-  baseURL: 'http://localhost:5000/api', // Note: Adjust port to match your backend if necessary
-});
+import apiClient from '../axios/api';
 
-// --- Helper Functions & Constants ---
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#AF19FF', '#FF1967'];
 
-// A custom label for the pie chart to show percentages
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
   const RADIAN = Math.PI / 180;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -37,7 +32,7 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
   );
 };
 
-// Function to process data for category charts (works on pre-filtered data)
+
 const processCategoryData = (transactionsToProcess, type) => {
   const categoryMap = transactionsToProcess
     .filter(tx => tx.type === type)
@@ -49,7 +44,7 @@ const processCategoryData = (transactionsToProcess, type) => {
   return Object.entries(categoryMap).map(([name, value]) => ({ name, value }));
 };
 
-// --- Placeholder for empty charts ---
+
 const EmptyChartPlaceholder = ({ message = "No data for this period" }) => (
   <div className="flex items-center justify-center h-full" style={{ minHeight: '300px' }}>
     <div className="text-center text-gray-500">
@@ -61,20 +56,18 @@ const EmptyChartPlaceholder = ({ message = "No data for this period" }) => (
 );
 
 
-// --- Dashboard Component ---
 
 function Dashboard() {
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // --- Global Time Filter State ---
-  const [globalTimeFilter, setGlobalTimeFilter] = useState('allTime'); // 'allTime', 'yearly', 'monthly', 'daily_7'
+
+  const [globalTimeFilter, setGlobalTimeFilter] = useState('allTime'); 
   
   const [categoryChartType, setCategoryChartType] = useState('expense'); 
   const navigate = useNavigate();
 
-  // 1. Fetch Data on component mount
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -90,38 +83,36 @@ function Dashboard() {
     fetchTransactions();
   }, []);
 
-  // 2. --- Global Transaction Filter ---
-  // This single useMemo hook filters all transactions based on the global dropdown
+ 
   const filteredTransactions = useMemo(() => {
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); // Start of today
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()); 
 
     switch (globalTimeFilter) {
-      case 'daily_7': // Last 7 days
+      case 'daily_7': 
         const sevenDaysAgo = new Date(today);
-        sevenDaysAgo.setDate(today.getDate() - 6); // Go back 6 days to get 7 total days
+        sevenDaysAgo.setDate(today.getDate() - 6); 
         return transactions.filter(tx => new Date(tx.date) >= sevenDaysAgo);
       
-      case 'monthly': // This current month
+      case 'monthly': 
         const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
         return transactions.filter(tx => new Date(tx.date) >= startOfMonth);
       
-      case 'yearly': // This current year
+      case 'yearly': 
         const startOfYear = new Date(now.getFullYear(), 0, 1);
         return transactions.filter(tx => new Date(tx.date) >= startOfYear);
       
       case 'allTime':
       default:
-        return transactions; // Return all transactions
+        return transactions; 
     }
   }, [transactions, globalTimeFilter]);
 
-  // 3. Process Data for Pie Charts (depends on filteredTransactions)
   const { 
     incomeVsExpenseData, 
     expenseByCategoryData_Pie,
     incomeByCategoryData_Pie,
-    totalFilteredSum // <-- NEW
+    totalFilteredSum 
   } = useMemo(() => {
     const totalIncome = filteredTransactions
       .filter(tx => tx.type === 'income')
@@ -138,17 +129,15 @@ function Dashboard() {
       ],
       expenseByCategoryData_Pie: processCategoryData(filteredTransactions, 'expense'),
       incomeByCategoryData_Pie: processCategoryData(filteredTransactions, 'income'), 
-      totalFilteredSum: totalIncome + totalExpense // <-- NEW
+      totalFilteredSum: totalIncome + totalExpense 
     };
-  }, [filteredTransactions]); // Depends on the global filter
+  }, [filteredTransactions]); 
 
-  // 4. Process data for Category Bar Chart (depends on filteredTransactions)
   const categoryChartData = useMemo(() => {
     return processCategoryData(filteredTransactions, categoryChartType);
-  }, [filteredTransactions, categoryChartType]); // Depends on the global filter
+  }, [filteredTransactions, categoryChartType]); 
 
 
-  // 5. Render Loading/Error/Dashboard
   if (isLoading) {
     return (
       <div className="w-full h-screen flex items-center justify-center bg-gray-100">
@@ -168,12 +157,11 @@ function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-100 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
-        
-        {/* --- Header & NEW Global Filter --- */}
+
         <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
           <h1 className="text-3xl font-bold text-customDarkText">Dashboard</h1>
           
-          {/* --- Global Time Filter Dropdown --- */}
+
           <div className="flex-grow md:flex-grow-0 md:w-72">
             <label htmlFor="timeFilter" className="block text-sm font-medium text-gray-700">Select Time Period</label>
             <select
@@ -197,10 +185,8 @@ function Dashboard() {
           </button>
         </div>
 
-        {/* --- Charts Grid --- */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* --- Card 1: Income vs Expense Pie Chart (Now dynamic) --- */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold mb-2 text-customDarkText">Income vs. Expense</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -233,8 +219,6 @@ function Dashboard() {
               )}
             </div>
           </div>
-
-          {/* --- Card 2: Expense Breakdown Pie Chart (Now dynamic) --- */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold mb-2 text-customDarkText">Expense Breakdown (Pie)</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -268,7 +252,6 @@ function Dashboard() {
             </div>
           </div>
 
-          {/* --- Card 3: Income Breakdown Pie Chart (Now dynamic) --- */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <h3 className="text-xl font-semibold mb-2 text-customDarkText">Income Breakdown (Pie)</h3>
             <p className="text-sm text-gray-600 mb-4">
@@ -302,8 +285,6 @@ function Dashboard() {
             </div>
           </div>
 
-
-          {/* --- Card 4: Category Bar Chart (Now dynamic) --- */}
           <div className="bg-white p-6 rounded-lg shadow-lg">
             <div className="flex flex-wrap justify-between items-center gap-2 mb-2">
               <h3 className="text-xl font-semibold text-customDarkText">Breakdown by Category</h3>

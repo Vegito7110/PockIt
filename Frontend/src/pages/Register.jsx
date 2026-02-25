@@ -26,7 +26,6 @@ function Register() {
     }));
   }
 
-  // validation on submit
   const handleSubmit = async (e) => {
     e.preventDefault();
     let validationErrors = {};
@@ -68,53 +67,9 @@ function Register() {
     }
   }
 
-  // const handleClick = () => {
-  //   const {
-  //     firstName,
-  //     lastName,
-  //     phone,
-  //     email,
-  //     password,
-  //     confirm_password,
-  //     agreed
-  //   } = formData;
-  
-  //   if (
-  //     !firstName ||
-  //     !lastName ||
-  //     !phone ||
-  //     !email ||
-  //     !password ||
-  //     !confirm_password ||
-  //     !agreed
-  //   ) {
-  //     alert('Please fill in all fields and agree to the terms.');
-  //     return;
-  //   }
-  
-  //   if (password !== confirm_password) {
-  //     alert("Passwords don't match.");
-  //     return;
-  //   }
-
-    
-  
-  //   // TODO: Save the data to localStorage or database here
-  
-  //   navigate('/home'); 
-  // }
   return (
-    // Outer container: Full screen height, custom green background,
-    // and uses flexbox to center its child (the form) both horizontally and vertically.
-    <div className="w-full min-h-screen bg-bgCustom flex items-center justify-center p-4"> {/* Added p-4 for padding on small screens */}
-      {/* The form itself:
-          - bg-white: Gives it a white background
-          - p-8: Adds internal padding
-          - rounded-lg: Rounded corners
-          - shadow-lg: A nice shadow
-          - w-full max-w-2xl: Makes it responsive, taking full width up to a max of 2xl (approx 48rem/768px)
-          - mx-auto: Centers the form horizontally if its width is less than 100%
-      */}
+
+    <div className="w-full min-h-screen bg-bgCustom flex items-center justify-center p-4"> 
       <form className="bg-white p-8 rounded-lg shadow-lg w-full max-w-2xl" onSubmit={handleSubmit}>
         
         <h2 className="text-2xl font-bold mb-6 text-center text-customDarkText font-inter">Create an Account</h2>
@@ -162,21 +117,9 @@ function Register() {
             />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
           </div>
-          {/* Add more fields for Email, Password, Confirm Password within the grid or below */}
-          {/* Example for Email within grid: */}
-          {/* <div>
-            <label htmlFor="email_grid" className="block mb-2 text-sm font-medium text-gray-900 font-inter">Email address</label>
-            <input
-              type="email"
-              id="email_grid"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="john.doe@company.com"
-              required
-            />
-          </div> */}
         </div>
 
-        {/* Fields that span full width (if not in grid) */}
+
         <div className="mb-6">
           <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 font-inter">Email address</label>
           <input

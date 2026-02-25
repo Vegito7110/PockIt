@@ -10,7 +10,7 @@ const transactionSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['income', 'expense'], // Good for data consistency
+    enum: ['income', 'expense'], 
     required: true,
   },
   date: {
@@ -21,12 +21,12 @@ const transactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // This is the link back to your User collection
+
   user: {
-    type: mongoose.Schema.Types.ObjectId, // This is the User's _id from MongoDB
-    ref: 'User', // Tells Mongoose this links to the 'User' model
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
     required: true,
-    index: true, // Speeds up queries for a user's transactions
+    index: true, 
   },
 }, { timestamps: true });
 

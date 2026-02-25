@@ -1,10 +1,9 @@
 const Transaction = require('../models/transaction');
 const getTransactions= async (req, res) => {
   try {
-    // We can trust req.user because the middleware verified it.
-    // req.user._id is the user's MongoDB document ID.
+
     const transactions = await Transaction.find({ user: req.user._id })
-                                          .sort({ date: -1 }); // Get newest first
+                                          .sort({ date: -1 });
 
     res.status(200).json(transactions);
     
@@ -22,7 +21,7 @@ const createTransactions =async (req, res) => {
       type,
       date,
       category,
-      user: req.user._id // Link the transaction to the logged-in user
+      user: req.user._id
     });
 
     await newTransaction.save();
@@ -36,19 +35,17 @@ const deleteTransaction = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find the transaction
+
     const transaction = await Transaction.findById(id);
 
     if (!transaction) {
       return res.status(404).json({ msg: 'Transaction not found' });
     }
 
-    // IMPORTANT: Verify the transaction belongs to the logged-in user
     if (transaction.user.toString() !== req.user._id.toString()) {
       return res.status(401).json({ msg: 'User not authorized' });
     }
 
-    // We use findByIdAndDelete (or remove())
     await Transaction.findByIdAndDelete(id);
 
     res.json({ msg: 'Transaction removed' });

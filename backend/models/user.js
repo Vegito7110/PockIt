@@ -16,9 +16,9 @@ const UserSchema = new mongoose.Schema({
     type: String,
   },
   phone_number: {
-    type: String,   // <-- CHANGED from Number to String
+    type: String,   
     unique: true,
-    sparse: true    // <-- ADDED sparse index
+    sparse: true    
   }
 }, { timestamps: true });
 

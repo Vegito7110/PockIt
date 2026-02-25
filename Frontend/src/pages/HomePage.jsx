@@ -16,26 +16,13 @@ function HomePage() {
 
 
   useEffect(() => {
-    // This sets up a listener. It fires once on mount, and again any time
-    // the user logs in or out.
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // When the listener fires, it gives us the user object or null.
       setUser(currentUser);
-      // Now we know the auth state, so we can stop loading.
       setIsLoading(false);
     });
-
-    // This is a cleanup function. It will unsubscribe from the listener
-    // when the component is unmounted, preventing memory leaks.
     return () => unsubscribe();
   }, []);
-
-  // useEffect(() => {
-  //   if (auth.currentUser) {
-  //     setUserId(auth.currentUser.uid);
-  //     setDisplayName(auth.currentUser.displayName || 'User');
-  //   }
-  // },[]);
 
   const handleTotalsUpdate = ({income,expense}) => {
     setIncome(income);
@@ -49,7 +36,6 @@ function HomePage() {
     );
   }
   if (!user) {
-    // You could also use `useNavigate` to redirect to the login page here.
     return (
       <div className="w-full h-screen flex items-center justify-center bg-bgCustom">
         <p className="text-white text-xl">Please log in to continue.</p>
